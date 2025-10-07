@@ -70,7 +70,7 @@ export default function StoreNavbar() {
   return (
     <>
       <nav className="sticky top-0 z-40 w-full border-b bg-white/95 dark:bg-gray-900/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 dark:supports-[backdrop-filter]:bg-gray-900/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto px-4">
           <div className="flex justify-between items-center h-16 md:h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center">

@@ -39,7 +39,7 @@ export default function ProductDetailActions({
       <div className="flex flex-col sm:flex-row gap-3">
         <Button
           size="lg"
-          className="flex-1 h-12"
+          className="flex-1 min-h-12"
           onClick={onAddToCart}
           disabled={isOutOfStock}
         >

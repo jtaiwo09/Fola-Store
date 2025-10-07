@@ -132,7 +132,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
           )}
 
           {/* Helpful Buttons */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center flex-wrap gap-x-4 gap-y-2">
             <span className="text-sm text-gray-600 dark:text-gray-400">
               Was this helpful?
             </span>

@@ -33,7 +33,7 @@ const CartItemQuantity = ({
   };
 
   return (
-    <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg">
+    <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg w-fit">
       <Button
         variant="ghost"
         size="icon"

@@ -23,7 +23,7 @@ export default function CartPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-light text-gray-900 dark:text-white mb-8">
+      <h1 className="text-3xl sm:text-4xl font-light text-gray-900 dark:text-white mb-4 sm:mb-8">
         Shopping Cart
       </h1>
 
@@ -39,13 +39,13 @@ export default function CartPage() {
 
           <div className="flex gap-4">
             <Button
-              variant="outline"
-              className="w-full"
+              variant="default"
+              className="flex-1"
               onClick={() => router.push("/products")}
             >
               Continue Shopping
             </Button>
-            <Button variant="outline" onClick={clearCart}>
+            <Button variant="outline" className="flex-1" onClick={clearCart}>
               Clear Cart
             </Button>
           </div>

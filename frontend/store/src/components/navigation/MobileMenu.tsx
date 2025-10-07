@@ -1,6 +1,14 @@
-import { LogOut, ShoppingCart } from "lucide-react";
-import Link from "next/link";
+"use client";
+
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { ShoppingCart, LogOut } from "lucide-react";
 import { Button } from "../ui/button";
+import Link from "next/link";
 import { navLinks, profileLinks } from "./data";
 
 export default function MobileMenu({
@@ -11,49 +19,28 @@ export default function MobileMenu({
   cartCount,
   mounted,
   onSignOut,
+  user,
 }: {
   isOpen: boolean;
   onClose: () => void;
   isSignedIn?: boolean;
   isLoaded: boolean;
-  user: any;
   cartCount: number;
   mounted: boolean;
   onSignOut: () => void;
+  user: any;
 }) {
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 lg:hidden">
-      <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={onClose}
-      />
-      <div className="absolute right-0 top-0 h-full w-full max-w-sm bg-white dark:bg-gray-900 shadow-2xl overflow-hidden">
-        <div className="flex flex-col h-full">
+    <Sheet open={isOpen} onOpenChange={onClose}>
+      <SheetContent side="left" className="w-full max-w-sm px-0">
+        <div className="flex flex-col h-full overflow-hidden">
           {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b dark:border-gray-800">
-            <span className="text-xl font-light">Menu</span>
-            <Button variant="ghost" size="icon" onClick={onClose}>
-              <span className="sr-only">Close menu</span>
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </Button>
-          </div>
+          <SheetHeader className="border-b px-6 py-4 dark:border-gray-800">
+            <SheetTitle className="text-xl font-light">Menu</SheetTitle>
+          </SheetHeader>
 
           {/* Navigation */}
-          <nav className="flex-1 overflow-y-auto p-6 space-y-6">
+          <nav className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
             {/* Main Links */}
             <div className="space-y-1">
               <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
@@ -96,50 +83,34 @@ export default function MobileMenu({
           </nav>
 
           {/* Footer */}
-          <div className="p-6 border-t dark:border-gray-800 flex flex-col gap-y-3">
+          <div className="px-6 py-6 border-t dark:border-gray-800 flex flex-col gap-y-3">
             {isLoaded && (
               <>
+                {/* Cart Button */}
+                <Link href="/cart" onClick={onClose}>
+                  <Button variant="outline" className="w-full justify-between">
+                    <span className="flex items-center gap-2">
+                      <ShoppingCart className="w-4 h-4" />
+                      Cart
+                    </span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      ({mounted ? cartCount : 0})
+                    </span>
+                  </Button>
+                </Link>
+
+                {/* Auth Buttons */}
                 {isSignedIn ? (
-                  <>
-                    <Link href="/cart" onClick={onClose}>
-                      <Button
-                        variant="outline"
-                        className="w-full justify-between"
-                      >
-                        <span className="flex items-center gap-2">
-                          <ShoppingCart className="w-4 h-4" />
-                          Cart
-                        </span>
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
-                          ({mounted ? cartCount : 0})
-                        </span>
-                      </Button>
-                    </Link>
-                    <Button
-                      onClick={onSignOut}
-                      variant="ghost"
-                      className="w-full justify-start text-red-600 dark:text-red-400"
-                    >
-                      <LogOut className="w-4 h-4 mr-2" />
-                      Sign Out
-                    </Button>
-                  </>
+                  <Button
+                    onClick={onSignOut}
+                    variant="ghost"
+                    className="w-full justify-start text-red-600 dark:text-red-400"
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </Button>
                 ) : (
                   <>
-                    <Link href="/cart" onClick={onClose}>
-                      <Button
-                        variant="outline"
-                        className="w-full justify-between"
-                      >
-                        <span className="flex items-center gap-2">
-                          <ShoppingCart className="w-4 h-4" />
-                          Cart
-                        </span>
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
-                          ({mounted ? cartCount : 0})
-                        </span>
-                      </Button>
-                    </Link>
                     <Link href="/sign-in" onClick={onClose}>
                       <Button variant="outline" className="w-full">
                         Sign In
@@ -154,7 +125,7 @@ export default function MobileMenu({
             )}
           </div>
         </div>
-      </div>
-    </div>
+      </SheetContent>
+    </Sheet>
   );
 }

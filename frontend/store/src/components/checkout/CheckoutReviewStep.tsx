@@ -17,8 +17,8 @@ export default function CheckoutReviewStep({
   onContinue,
 }: CheckoutReviewStepProps) {
   return (
-    <Card className="dark:bg-gray-800 dark:border-gray-700">
-      <CardContent className="p-6">
+    <Card className="dark:bg-gray-800 dark:border-gray-700 p-0">
+      <CardContent className="p-4 md:p-6">
         <h2 className="text-xl font-medium text-gray-900 dark:text-white mb-6">
           Review Your Order
         </h2>

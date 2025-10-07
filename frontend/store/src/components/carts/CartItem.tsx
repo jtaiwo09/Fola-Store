@@ -17,10 +17,11 @@ export default function CartItem({ item }: CartItemProps) {
     updateQuantity(item.product._id, item.variant.sku, item.quantity + change);
 
   return (
-    <Card>
-      <CardContent className="p-6">
-        <div className="flex gap-6">
-          <div className="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+    <Card className="p-0">
+      <CardContent className="p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+          {/* Image */}
+          <div className="w-full sm:w-24 h-40 sm:h-24 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shrink-0">
             <Image
               src={item.product.featuredImage}
               alt={item.product.name}
@@ -30,10 +31,11 @@ export default function CartItem({ item }: CartItemProps) {
             />
           </div>
 
-          <div className="flex-1">
-            <div className="flex justify-between mb-2">
+          {/* Product Info */}
+          <div className="flex-1 flex flex-col justify-between">
+            <div className="flex justify-between items-start mb-2">
               <div className="flex-1">
-                <h3 className="font-medium text-gray-900 dark:text-white mb-1">
+                <h3 className="font-medium text-gray-900 dark:text-white text-base sm:text-lg">
                   {item.product.name}
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -48,12 +50,13 @@ export default function CartItem({ item }: CartItemProps) {
               </button>
             </div>
 
+            {/* Color */}
             <div className="flex items-center gap-2 mb-4">
               <span className="text-sm text-gray-600 dark:text-gray-400">
                 Color:
               </span>
               <div
-                className="w-6 h-6 rounded-full border-2"
+                className="w-5 h-5 rounded-full border-2"
                 style={{ backgroundColor: item.variant.colorHex }}
               />
               <span className="text-sm text-gray-900 dark:text-white">
@@ -61,7 +64,8 @@ export default function CartItem({ item }: CartItemProps) {
               </span>
             </div>
 
-            <div className="flex items-center justify-between">
+            {/* Quantity & Price */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
               <CartItemQuantity
                 quantity={item.quantity}
                 unitOfMeasure={item.product.unitOfMeasure}

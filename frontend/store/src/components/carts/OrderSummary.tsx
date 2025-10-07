@@ -17,8 +17,8 @@ export default function OrderSummary({
 }: OrderSummaryProps) {
   return (
     <div className="lg:sticky lg:top-24 h-fit">
-      <Card>
-        <CardContent className="p-6">
+      <Card className="p-0">
+        <CardContent className="p-4 md:p-6">
           <h2 className="text-xl font-medium text-gray-900 dark:text-white mb-6">
             Order Summary
           </h2>

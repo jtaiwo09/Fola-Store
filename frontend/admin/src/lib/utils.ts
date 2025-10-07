@@ -22,7 +22,11 @@ export function formatCurrency(
   const options = {
     style: "currency" as const,
     currency: currency,
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
   };
+
+  console.log(45, amount);
 
   try {
     return new Intl.NumberFormat(locale, options).format(amount);

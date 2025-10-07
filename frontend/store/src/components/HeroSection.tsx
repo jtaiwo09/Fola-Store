@@ -22,12 +22,12 @@ export function HeroSection() {
           <div className="inline-flex items-center gap-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full px-4 py-2 shadow-sm">
             <TrendingUp className="w-4 h-4 text-yellow-600 dark:text-yellow-500" />
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Premium Fabrics Collection 2025
+              Premium Fabrics Collection
             </span>
           </div>
 
           {/* Main Heading */}
-          <h1 className="text-5xl md:text-7xl font-light text-gray-900 dark:text-white leading-tight">
+          <h1 className="text-4xl md:text-7xl font-light text-gray-900 dark:text-white leading-tight">
             Luxury Fabrics for
             <span className="block bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 dark:from-white dark:via-gray-300 dark:to-white bg-clip-text text-transparent">
               Every Occasion

@@ -25,6 +25,8 @@ export function formatCurrency(
   const options = {
     style: "currency" as const,
     currency: currency,
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
   };
 
   try {
