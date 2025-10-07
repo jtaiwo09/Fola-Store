@@ -21,7 +21,7 @@ export const StoreSettingsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [settings, setSettings] = useState<ISettings | null>(null);
-  const [_, setSocket] = useState<Socket | null>(null);
+  const [, setSocket] = useState<Socket | null>(null);
 
   const { data, isPending, error } = useSettings();
 
