@@ -18,11 +18,7 @@ app.use(helmet());
 // CORS configuration
 app.use(
   cors({
-    origin: [
-      config.CLIENT_URL,
-      config.ADMIN_URL,
-      "https://disconsolate-bottommost-kendra.ngrok-free.dev",
-    ],
+    origin: [config.CLIENT_URL, config.ADMIN_URL],
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
