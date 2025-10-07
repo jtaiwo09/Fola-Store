@@ -78,10 +78,19 @@ export const API_ENDPOINTS = {
     SYNC_CLERK: "/users/sync-clerk",
   },
 
+  // Upload
   UPLOAD: {
     IMAGE: "/upload/image",
     IMAGES: "/upload/images",
     DELETE: "/upload/image",
+  },
+
+  // Notifications
+  NOTIFICATIONS: {
+    BASE: "/notifications",
+    READ_ALL: "/notifications/read-all",
+    MARK_AS_READ: (id: string) => `/notifications/${id}/read`,
+    DELETE: (id: string) => `/notifications/${id}`,
   },
 } as const;
 
@@ -131,5 +140,10 @@ export const QUERY_KEYS = {
     ALL: ["users"] as const,
     LIST: (filters?: any) => ["users", "list", filters] as const,
     BY_ID: (id: string) => ["users", "detail", id] as const,
+  },
+  NOTIFICATIONS: {
+    BASE: ["notifications"] as const,
+    PAGINATED: (page = 1, limit = 20) =>
+      ["notifications", "list", page, limit] as const,
   },
 } as const;

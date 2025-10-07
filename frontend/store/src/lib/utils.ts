@@ -20,23 +20,21 @@ export function formatDate(date: string | Date, format = "ll"): string {
 export function formatCurrency(
   amount: number,
   currency = "NGN",
-  locale: string = "en-NG"
+  locale = "en-NG",
+  fractionDigits?: number
 ): string {
-  const options = {
-    style: "currency" as const,
-    currency: currency,
-    maximumFractionDigits: 0,
-    minimumFractionDigits: 0,
+  const options: Intl.NumberFormatOptions = {
+    style: "currency",
+    currency,
+    minimumFractionDigits: fractionDigits ?? 0,
+    maximumFractionDigits: fractionDigits ?? 0,
   };
 
   try {
     return new Intl.NumberFormat(locale, options).format(amount);
   } catch (e) {
     console.error("Error formatting currency:", e);
-    return `${currency} ${amount.toFixed(2)}`;
+    // fallback formatting
+    return `${currency} ${amount.toFixed(fractionDigits ?? 2)}`;
   }
-}
-
-export function formatRelativeTime(date: string | Date | dayjs.Dayjs): string {
-  return dayjs(date).fromNow();
 }

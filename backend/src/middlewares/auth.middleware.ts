@@ -1,4 +1,3 @@
-// backend/middlewares/auth.middleware.ts - REPLACE ENTIRE FILE
 import { Request, Response, NextFunction } from "express";
 import { verifyToken } from "@clerk/backend";
 import jwt from "jsonwebtoken";

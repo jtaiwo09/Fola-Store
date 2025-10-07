@@ -36,7 +36,7 @@ function OrdersPage() {
       </div>
 
       {orders.length === 0 ? (
-        <Card>
+        <Card className="p-0">
           <CardContent className="p-12 text-center">
             <p className="text-gray-600 dark:text-gray-400 mb-4">
               You haven't placed any orders yet

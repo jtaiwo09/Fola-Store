@@ -20,6 +20,8 @@ import {
 } from "lucide-react";
 import { Order } from "@/lib/api/orders";
 import { formatDate } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { usePriceFormatter } from "@/lib/hooks/usePriceFormatter";
 
 interface OrderCardProps {
   order: Order;
@@ -82,9 +84,26 @@ export function OrderCard({ order }: OrderCardProps) {
   const statusConfig = getStatusConfig(order.status);
   const StatusIcon = statusConfig.icon;
   const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0);
+  const router = useRouter();
+
+  const formatPrice = usePriceFormatter();
+
+  const handleClick = () => {
+    router.push(`/orders/${order._id}`);
+  };
 
   return (
-    <Card className="overflow-hidden hover:shadow-md transition-shadow py-0">
+    <Card
+      className="overflow-hidden hover:shadow-md transition-shadow py-0 cursor-pointer"
+      onClick={handleClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          handleClick();
+        }
+      }}
+    >
       <CardContent className="p-0">
         {/* Header Section */}
         <div className="bg-gray-50 dark:bg-gray-900 p-4 border-b">
@@ -114,22 +133,10 @@ export function OrderCard({ order }: OrderCardProps) {
               </div>
             </div>
 
-            {/* Total & Action */}
-            <div className="flex items-center gap-4">
-              <div className="text-right">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Total
-                </p>
-                <p className="text-xl font-bold">
-                  {order.currency} {order.total.toLocaleString()}
-                </p>
-              </div>
-              <Link href={`/orders/${order._id}`}>
-                <Button variant="outline" size="sm" className="gap-1">
-                  View Details
-                  <ChevronRight className="w-4 h-4" />
-                </Button>
-              </Link>
+            {/* Total */}
+            <div className="text-right">
+              <p className="text-sm text-gray-600 dark:text-gray-400">Total</p>
+              <p className="text-xl font-bold">{formatPrice(order.total)}</p>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useVerifyPayment } from "@/lib/hooks/useOrders";
 import { Loader2, CheckCircle, XCircle } from "lucide-react";
@@ -9,7 +9,6 @@ import Link from "next/link";
 
 function VerifyPaymentPageContent() {
   const router = useRouter();
-  const routerRef = useRef(router);
   const searchParams = useSearchParams();
   const reference = searchParams.get("reference");
   const verifyPayment = useVerifyPayment();
@@ -19,12 +18,8 @@ function VerifyPaymentPageContent() {
   );
 
   useEffect(() => {
-    routerRef.current = router;
-  }, [router]);
-
-  useEffect(() => {
     if (!reference) {
-      routerRef.current.push("/");
+      router.push("/");
       return;
     }
 
@@ -38,7 +33,7 @@ function VerifyPaymentPageContent() {
     };
 
     verify();
-  }, [reference, verifyPayment]);
+  }, [reference]);
 
   if (status === "verifying") {
     return (
