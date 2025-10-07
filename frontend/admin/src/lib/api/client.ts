@@ -1,4 +1,3 @@
-// apps/admin/src/lib/api/client.ts
 import axios, {
   AxiosError,
   AxiosInstance,
