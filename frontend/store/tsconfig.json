@@ -29,9 +29,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/types/svgr.d.ts",
-    "next.config.ts",
-    "../admin/src/lib/hooks/useUsers.ts"
-, "../admin/src/lib/api/users.ts"  ],
-
+    "next.config.ts"
+  ],
   "exclude": ["node_modules"]
 }
