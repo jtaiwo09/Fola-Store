@@ -1,3 +1,5 @@
+"use client";
+
 import { Product } from "@/lib/api/products";
 import { useProductPrice } from "@/lib/hooks/useProductPrice";
 

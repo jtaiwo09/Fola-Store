@@ -13,7 +13,6 @@ import RatingBreakdown from "./RatingBreakdown";
 import ReviewCard from "./ReviewCard";
 import ReviewSubmissionForm from "./ReviewSubmissionForm";
 import { useProductReviews } from "@/lib/hooks/useReviews";
-import { useAuth } from "@clerk/nextjs";
 
 interface ProductReviewsSectionProps {
   productId: string;
@@ -28,7 +27,6 @@ export default function ProductReviewsSection({
   averageRating,
   reviewCount,
 }: ProductReviewsSectionProps) {
-  const { userId } = useAuth();
   const [page, setPage] = useState(1);
   const [isFormOpen, setIsFormOpen] = useState(false);
 

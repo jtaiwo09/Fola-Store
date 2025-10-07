@@ -31,7 +31,7 @@ export default function StoreNavbar() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { settings, loading, error } = useStoreSettings();
+  const { settings } = useStoreSettings();
 
   useEffect(() => {
     setMounted(true);

@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { useCreateReview, useUploadReviewImages } from "@/lib/hooks/useReviews";
 import { useAuth } from "@clerk/nextjs";
 import { toast } from "sonner";
+import Image from "next/image";
 
 interface ReviewSubmissionFormProps {
   productId: string;
@@ -181,8 +182,10 @@ export default function ReviewSubmissionForm({
         <div className="flex flex-wrap gap-4">
           {images.map((image, idx) => (
             <div key={idx} className="relative">
-              <img
+              <Image
                 src={image}
+                width={96}
+                height={96}
                 alt={`Review ${idx + 1}`}
                 className="w-24 h-24 object-cover rounded-lg border border-gray-200 dark:border-gray-700"
               />

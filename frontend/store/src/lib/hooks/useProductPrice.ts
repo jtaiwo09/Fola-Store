@@ -15,18 +15,22 @@ interface UseProductPriceResult {
 }
 
 export function useProductPrice(product: Product): UseProductPriceResult {
-  return getProductPriceDetails(product);
-}
-
-export function getProductPriceDetails(
-  product: Product
-): UseProductPriceResult {
   const { settings } = useStoreSettings();
   const currency = settings?.store.currency;
   const language = settings?.store.language;
 
-  console.log(22, language, currency);
+  return getProductPriceDetails({ product, currency, language });
+}
 
+export function getProductPriceDetails({
+  product,
+  currency,
+  language,
+}: {
+  product: Product;
+  currency?: string;
+  language?: string;
+}): UseProductPriceResult {
   const hasDiscount = Boolean(
     product.salePrice &&
       product.basePrice &&

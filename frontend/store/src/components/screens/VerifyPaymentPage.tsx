@@ -32,7 +32,7 @@ function VerifyPaymentPageContent() {
       try {
         await verifyPayment.mutateAsync({ reference });
         setStatus("success");
-      } catch (_error) {
+      } catch {
         setStatus("failed");
       }
     };

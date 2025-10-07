@@ -1,6 +1,5 @@
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Trash2, Minus, Plus } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import Image from "next/image";
 import { formatCurrency } from "@/lib/utils";
 import { type CartItem, useCartStore } from "@/lib/store/cartStore";

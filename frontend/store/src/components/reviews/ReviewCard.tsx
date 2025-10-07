@@ -1,4 +1,3 @@
-// components/reviews/ReviewCard.tsx
 import { Star, ThumbsUp, ThumbsDown, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -11,6 +10,7 @@ import {
   useRemoveReviewVote,
 } from "@/lib/hooks/useReviews";
 import { formatRelativeTime } from "@/lib/utils";
+import Image from "next/image";
 
 interface ReviewCardProps {
   review: Review;
@@ -119,9 +119,11 @@ export default function ReviewCard({ review }: ReviewCardProps) {
           {review.images && review.images.length > 0 && (
             <div className="flex gap-2 mb-4">
               {review.images.map((image, idx) => (
-                <img
+                <Image
                   key={idx}
                   src={image}
+                  width={80}
+                  height={80}
                   alt={`Review image ${idx + 1}`}
                   className="w-20 h-20 object-cover rounded-lg border border-gray-200 dark:border-gray-700"
                 />

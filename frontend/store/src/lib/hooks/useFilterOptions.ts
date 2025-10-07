@@ -1,6 +1,3 @@
-// lib/hooks/useFilterOptions.ts
-import { useQuery } from "@tanstack/react-query";
-import apiClient from "../api/client";
 import { usePublicQuery } from "./usePublicQuery";
 import { API_ENDPOINTS } from "../constants/api-endpoints";
 
