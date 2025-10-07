@@ -2,6 +2,7 @@ import { Calendar, Eye, Package2, Tag } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
+import Image from "next/image";
 
 interface ProductInfoCardProps {
   product: any;
@@ -22,9 +23,11 @@ export default function ProductInfoCard({ product }: ProductInfoCardProps) {
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
             Featured Image
           </p>
-          <img
+          <Image
             src={product.featuredImage}
             alt={product.name}
+            width={100}
+            height={192}
             className="w-full h-48 object-cover rounded-lg border border-gray-200 dark:border-gray-700"
           />
         </div>

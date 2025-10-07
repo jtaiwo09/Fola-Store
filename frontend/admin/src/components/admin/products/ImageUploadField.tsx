@@ -1,4 +1,3 @@
-// components/admin/products/ImageUploadField.tsx
 "use client";
 
 import { useState } from "react";
@@ -7,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { X, Upload, Link as LinkIcon, Loader2 } from "lucide-react";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
 import {
   Dialog,
   DialogContent,

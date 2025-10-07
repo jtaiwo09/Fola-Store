@@ -153,7 +153,7 @@ function AdminResetPasswordPageContent() {
 export default function AdminResetPasswordPage() {
   return (
     <Suspense fallback={<p>Loading...</p>}>
-      <AdminResetPasswordPage />
+      <AdminResetPasswordPageContent />
     </Suspense>
   );
 }

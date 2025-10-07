@@ -1,4 +1,3 @@
-// app/admin/customers/[id]/page.tsx
 "use client";
 
 import { use } from "react";
@@ -12,9 +11,7 @@ import {
   ArrowLeft,
   Mail,
   Phone,
-  MapPin,
   Calendar,
-  ShoppingBag,
   Ban,
   CheckCircle,
 } from "lucide-react";

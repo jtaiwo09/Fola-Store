@@ -25,7 +25,6 @@ export default function PricingSection({
 }: PricingSectionProps) {
   const basePrice = watch("basePrice");
   const salePrice = watch("salePrice");
-  const compareAtPrice = watch("compareAtPrice");
 
   const discount =
     basePrice && salePrice && salePrice < basePrice

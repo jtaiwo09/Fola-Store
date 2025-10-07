@@ -15,7 +15,7 @@ export function FormMultiSelect({
   options,
   value,
   onChange,
-  placeholder = "Select options",
+  // placeholder = "Select options",
   error,
   required,
   description,

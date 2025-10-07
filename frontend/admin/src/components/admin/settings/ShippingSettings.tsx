@@ -1,4 +1,3 @@
-// components/admin/settings/ShippingSettings.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -8,7 +7,7 @@ import { z } from "zod";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FormInput, FormSwitch } from "@/components/forms";
-import { Save, Loader2, Plus, Trash2 } from "lucide-react";
+import { Save, Loader2 } from "lucide-react";
 import {
   useSettings,
   useUpdateShippingSettings,
@@ -41,8 +40,6 @@ export default function ShippingSettings() {
   const {
     register,
     handleSubmit,
-    watch,
-    setValue,
     reset,
     formState: { errors, isDirty },
   } = useForm<ShippingSettingsFormData>({

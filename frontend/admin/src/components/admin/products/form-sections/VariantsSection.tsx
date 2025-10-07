@@ -25,7 +25,6 @@ interface VariantsSectionProps {
 export default function VariantsSection({
   control,
   watch,
-  setValue,
   errors,
 }: VariantsSectionProps) {
   const [dialogOpen, setDialogOpen] = useState(false);

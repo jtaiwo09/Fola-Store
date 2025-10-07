@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, Menu, Search, User, LogOut, Settings } from "lucide-react";
+import { Menu, Search, User, LogOut, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -24,7 +24,7 @@ interface AdminNavbarProps {
 export default function AdminNavbar({ onMenuClick }: AdminNavbarProps) {
   const router = useRouter();
   const { user, logout } = useAuth();
-  const { socket, isConnected } = useSocket();
+  const { isConnected } = useSocket();
 
   const handleLogout = () => {
     logout.mutate();

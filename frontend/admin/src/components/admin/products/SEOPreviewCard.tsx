@@ -1,6 +1,7 @@
 import { Search, Globe } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
 
 interface SEOPreviewCardProps {
   name: string;
@@ -108,9 +109,11 @@ export default function SEOPreviewCard({
             <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
               Featured Image (OG Image)
             </p>
-            <img
+            <Image
               src={featuredImage}
               alt={name}
+              width={128}
+              height={128}
               className="w-full h-32 object-cover rounded-lg border border-gray-200 dark:border-gray-700"
             />
           </div>

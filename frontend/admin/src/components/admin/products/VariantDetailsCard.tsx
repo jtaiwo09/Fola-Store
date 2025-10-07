@@ -1,6 +1,7 @@
 import { Package, AlertTriangle, CheckCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
 
 interface Variant {
   sku: string;
@@ -122,10 +123,12 @@ export default function VariantDetailsCard({
                         </p>
                         <div className="flex gap-2 overflow-x-auto">
                           {variant.images.slice(0, 4).map((image, imgIdx) => (
-                            <img
+                            <Image
                               key={imgIdx}
                               src={image}
                               alt={`${variant.color} ${imgIdx + 1}`}
+                              width={48}
+                              height={48}
                               className="w-12 h-12 rounded border border-gray-200 dark:border-gray-700 object-cover"
                             />
                           ))}
