@@ -1,8 +1,7 @@
 # render.yaml
 
-# optional: preview settings (for PR preview environments)
 previews:
-  generation: manual # or automatic if you want PR previews
+  generation: manual
   expireAfterDays: 7
 
 envVarGroups:
@@ -12,20 +11,26 @@ envVarGroups:
 services:
   - name: api-dev
     type: web
-    repo: https://github.com/jtaiwo09/Fola-Store/tree/dev/backend
-    branch: dev # or staging branch
+    runtime: node
+    repo: https://github.com/jtaiwo09/Fola-Store
+    branch: dev
+    rootDir: backend # tells Render where the actual app code is
     plan: standard
+    buildCommand: npm install
+    startCommand: node index.js # or npm start or your entry point
     envVars:
-      # you can define env vars, or reference the group
       - fromGroup: APP-SECRETS-DEV
-    # You might disable auto-deploy for this or enable:
-    autoDeployTrigger: commit
+    autoDeploy: true
 
   - name: api-production
     type: web
-    repo: https://github.com/jtaiwo09/Fola-Store/tree/main/backend
-    branch: main # or your release branch
+    runtime: node
+    repo: https://github.com/jtaiwo09/Fola-Store
+    branch: main
+    rootDir: backend
     plan: standard
+    buildCommand: npm install
+    startCommand: node index.js # or npm start or your entry point
     envVars:
       - fromGroup: APP-SECRETS-PROD
-    autoDeployTrigger: commit # Or you may disable this and deploy manually
+    autoDeploy: true
