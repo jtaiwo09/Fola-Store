@@ -127,7 +127,7 @@ export const getPublicSettings = asyncHandler(
     );
 
     return ApiResponse.ok(res, "Public settings retrieved", {
-      settings: settings || {},
+      settings: settings,
     });
   }
 );
