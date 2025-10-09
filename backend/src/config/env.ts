@@ -24,6 +24,8 @@ interface EnvConfig {
   PAYSTACK_PUBLIC_KEY: string;
   CLIENT_URL: string;
   ADMIN_URL: string;
+  DEV_CLIENT_URL?: string;
+  PROD_CLIENT_URL?: string;
 
   SMTP_HOST?: string;
   SMTP_PORT?: number;
@@ -60,6 +62,9 @@ export const config: EnvConfig = {
   PAYSTACK_PUBLIC_KEY: getEnvVar("PAYSTACK_PUBLIC_KEY"),
   CLIENT_URL: getEnvVar("CLIENT_URL", "http://localhost:3000"),
   ADMIN_URL: getEnvVar("ADMIN_URL", "http://localhost:3001"),
+
+  DEV_CLIENT_URL: process.env.DEV_CLIENT_URL,
+  PROD_CLIENT_URL: process.env.PROD_CLIENT_URL,
 
   SMTP_HOST: process.env.SMTP_HOST,
   SMTP_PORT: process.env.SMTP_PORT

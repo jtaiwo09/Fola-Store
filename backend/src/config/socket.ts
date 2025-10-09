@@ -8,7 +8,8 @@ export const initializeSocket = (server: HttpServer) => {
   const allowedOrigins = [
     config.CLIENT_URL,
     config.ADMIN_URL,
-    process.env.DEV_CLIENT_URL,
+    config.DEV_CLIENT_URL,
+    config.PROD_CLIENT_URL,
     "http://localhost:3000",
     "http://localhost:3001",
   ].filter((url): url is string => !!url);
