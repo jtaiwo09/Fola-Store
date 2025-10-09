@@ -1,6 +1,6 @@
 import { config } from "@/config/env";
 import connectDB from "@/config/database";
-import app from "app";
+import app from "./app";
 import { createServer } from "http";
 import { initializeSocket } from "./config/socket";
 
