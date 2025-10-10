@@ -10,6 +10,7 @@ import uploadRoutes from "./upload.routes";
 import settingsRoutes from "./settings.routes";
 import reportsRoutes from "./reports.routes";
 import notificationsRoutes from "./notification.routes";
+import wishlistsRoutes from "./wishlist.routes";
 
 const router = Router();
 
@@ -30,6 +31,7 @@ router.get("/", (_req, res) => {
       upload: "/api/v1/upload",
       notifications: "/api/v1/notifications",
       settings: "/api/v1/settings",
+      wishlist: "/api/v1/wishlist",
     },
   });
 });
@@ -45,5 +47,6 @@ router.use("/admin/reports", reportsRoutes);
 router.use("/upload", uploadRoutes);
 router.use("/settings", settingsRoutes);
 router.use("/notifications", notificationsRoutes);
+router.use("/wishlist", wishlistsRoutes);
 
 export default router;

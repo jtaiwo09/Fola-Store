@@ -22,9 +22,16 @@ import { notifyNewOrder } from "@/services/notification.service";
 export const createOrder = asyncHandler(async (req: Request, res: Response) => {
   const { items, shippingAddress, billingAddress, paymentReference } = req.body;
 
-  // Validate stock availability for all items
+  // Step 1: Get all products at once
+  const productIds = items.map((item: any) => item.product);
+  const products = await Product.find({ _id: { $in: productIds } });
+
+  const orderItems = [];
+  let subtotal = 0;
+
+  // Step 2: Validate stock, calculate subtotal, prepare orderItems
   for (const item of items) {
-    const product = await Product.findById(item.product);
+    const product = products.find((p) => p._id.toString() === item.product);
 
     if (!product) {
       throw ApiError.notFound(`Product ${item.product} not found`);
@@ -41,37 +48,34 @@ export const createOrder = asyncHandler(async (req: Request, res: Response) => {
         `Insufficient stock for ${product.name} in ${variant.color}. Available: ${variant.stock}`
       );
     }
-  }
 
-  // Calculate totals
-  let subtotal = 0;
-  const orderItems = [];
-
-  for (const item of items) {
-    const product = await Product.findById(item.product);
-    const effectivePrice = product!.salePrice || product!.basePrice;
+    const effectivePrice = product.salePrice || product.basePrice;
     const totalPrice = effectivePrice * item.quantity;
-
     subtotal += totalPrice;
 
     orderItems.push({
-      product: product!._id,
-      productName: product!.name,
-      productImage: product!.featuredImage,
+      product: product._id,
+      productName: product.name,
+      productImage: product.featuredImage,
       variant: item.variant,
       quantity: item.quantity,
       unitPrice: effectivePrice,
       totalPrice,
-      unitOfMeasure: product!.unitOfMeasure,
+      unitOfMeasure: product.unitOfMeasure,
     });
+
+    // Reduce stock immediately (in memory)
+    variant.stock -= item.quantity;
   }
+
+  // Step 3: Save updated products in parallel
+  await Promise.all(products.map((p) => p.save()));
 
   const shippingCost = APP_CONSTANTS.DEFAULT_SHIPPING_COST;
   const total = subtotal + shippingCost;
-
   const orderNumber = await generateOrderNumber();
 
-  // Create order
+  // Step 4: Create the order
   const order = await Order.create({
     customer: req.user!._id,
     items: orderItems,
@@ -91,19 +95,11 @@ export const createOrder = asyncHandler(async (req: Request, res: Response) => {
     orderNumber,
   });
 
-  // Reduce stock for each item
-  for (const item of items) {
-    const product = await Product.findById(item.product);
-    const variantIndex = product!.variants.findIndex(
-      (v) => v.color.toLowerCase() === item.variant.color.toLowerCase()
-    );
+  // Step 5: Send async notification (non-blocking)
+  notifyNewOrder(order).catch((err) => {
+    console.error("Failed to send order notification:", err.message);
+  });
 
-    if (variantIndex !== -1) {
-      product!.variants[variantIndex].stock -= item.quantity;
-      await product!.save();
-    }
-  }
-  await notifyNewOrder(order);
   return ApiResponse.created(res, SUCCESS_MESSAGES.ORDER_CREATED, { order });
 });
 
