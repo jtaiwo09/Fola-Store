@@ -34,6 +34,12 @@ interface EnvConfig {
   CLOUDINARY_CLOUD_NAME?: string;
   CLOUDINARY_API_KEY?: string;
   CLOUDINARY_API_SECRET?: string;
+
+  RESEND_API_KEY: string;
+  EMAIL_FROM: string;
+  TWILIO_ACCOUNT_SID?: string;
+  TWILIO_AUTH_TOKEN?: string;
+  TWILIO_PHONE_NUMBER?: string;
 }
 
 const getEnvVar = (key: string, defaultValue?: string): string => {
@@ -63,6 +69,9 @@ export const config: EnvConfig = {
   CLIENT_URL: getEnvVar("CLIENT_URL", "http://localhost:3000"),
   ADMIN_URL: getEnvVar("ADMIN_URL", "http://localhost:3001"),
 
+  RESEND_API_KEY: getEnvVar("RESEND_API_KEY"),
+  EMAIL_FROM: getEnvVar("EMAIL_FROM", "noreply@folastore.com"),
+
   DEV_CLIENT_URL: process.env.DEV_CLIENT_URL,
   PROD_CLIENT_URL: process.env.PROD_CLIENT_URL,
 
@@ -75,6 +84,10 @@ export const config: EnvConfig = {
   CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
   CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
   CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
+
+  TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
+  TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
+  TWILIO_PHONE_NUMBER: process.env.TWILIO_PHONE_NUMBER,
 };
 
 export const isDevelopment = config.NODE_ENV === "development";

@@ -6,7 +6,7 @@ export const APP_CONSTANTS = {
 
   // Order
   DEFAULT_CURRENCY: "NGN",
-  DEFAULT_SHIPPING_COST: 1500, // ₦15.00 in kobo
+  DEFAULT_SHIPPING_COST: 1500,
 
   // Product
   MIN_PRODUCT_ORDER: 1,

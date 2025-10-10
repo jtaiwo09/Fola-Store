@@ -14,7 +14,10 @@ import {
   SUCCESS_MESSAGES,
 } from "@/config/constants";
 import { generateOrderNumber } from "@/utils/generateOrderNumber";
-import { notifyNewOrder } from "@/services/notification.service";
+import {
+  notificationService,
+  notifyNewOrder,
+} from "@/services/notification.service";
 
 // @desc    Create new order
 // @route   POST /api/v1/orders
@@ -98,6 +101,9 @@ export const createOrder = asyncHandler(async (req: Request, res: Response) => {
   // Step 5: Send async notification (non-blocking)
   notifyNewOrder(order).catch((err) => {
     console.error("Failed to send order notification:", err.message);
+  });
+  notificationService.notifyNewOrder(order).catch((err) => {
+    console.error("Failed to send order notifications:", err.message);
   });
 
   return ApiResponse.created(res, SUCCESS_MESSAGES.ORDER_CREATED, { order });
@@ -252,7 +258,7 @@ export const updateOrderStatus = asyncHandler(
     if (!order) {
       throw ApiError.notFound(ERROR_MESSAGES.ORDER_NOT_FOUND);
     }
-
+    const previousStatus = order.status;
     order.status = status;
 
     if (status === "shipped") {
@@ -271,6 +277,22 @@ export const updateOrderStatus = asyncHandler(
     }
 
     await order.save();
+
+    // Send notifications (non-blocking)
+    if (status === "delivered") {
+      notificationService.notifyOrderDelivered(order).catch((err) => {
+        console.error("Failed to send delivery notification:", err.message);
+      });
+    } else {
+      notificationService
+        .notifyOrderStatusChange(order, previousStatus)
+        .catch((err) => {
+          console.error(
+            "Failed to send status change notification:",
+            err.message
+          );
+        });
+    }
 
     return ApiResponse.ok(res, SUCCESS_MESSAGES.ORDER_UPDATED, { order });
   }

@@ -1,4 +1,3 @@
-// backend/src/controllers/settings.controller.ts
 import { Request, Response } from "express";
 import Settings from "@/models/Settings";
 import ApiError from "@/utils/ApiError";
