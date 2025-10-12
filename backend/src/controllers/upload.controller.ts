@@ -14,10 +14,12 @@ export const uploadImage = asyncHandler(async (req: Request, res: Response) => {
     throw ApiError.badRequest("No file uploaded");
   }
 
-  // Upload buffer to Cloudinary using stream
+  const dynamicFolder = req.query.folder || req.body.folder || "products";
+  const fullFolderPath = `fola-store/${dynamicFolder}`;
+
   const uploadStream = cloudinary.uploader.upload_stream(
     {
-      folder: "fola-store/products",
+      folder: fullFolderPath,
       resource_type: "image",
       transformation: [
         { width: 1000, height: 1000, crop: "limit" },
@@ -51,11 +53,14 @@ export const uploadImages = asyncHandler(
       throw ApiError.badRequest("No files uploaded");
     }
 
+    const dynamicFolder = req.query.folder || req.body.folder || "products";
+    const fullFolderPath = `fola-store/${dynamicFolder}`;
+
     const uploadPromises = req.files.map((file: Express.Multer.File) => {
       return new Promise((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
           {
-            folder: "fola-store/products",
+            folder: fullFolderPath,
             resource_type: "image",
             transformation: [
               { width: 1000, height: 1000, crop: "limit" },
@@ -64,16 +69,13 @@ export const uploadImages = asyncHandler(
             ],
           },
           (error, result) => {
-            if (error) {
-              reject(error);
-            } else {
-              resolve({
-                url: result!.secure_url,
-                publicId: result!.public_id,
-                width: result!.width,
-                height: result!.height,
-              });
-            }
+            if (error) return reject(error);
+            resolve({
+              url: result!.secure_url,
+              publicId: result!.public_id,
+              width: result!.width,
+              height: result!.height,
+            });
           }
         );
 
