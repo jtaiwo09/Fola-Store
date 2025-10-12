@@ -1,8 +1,42 @@
-// models/User.ts
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcryptjs";
-import { AddressSchema, IShippingAddress } from "./Order";
 import { BaseDocument } from "../types";
+
+export interface IShippingAddress {
+  _id: mongoose.Types.ObjectId;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+  isDefault: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Export the AddressSchema for use in Order model
+export const AddressSchema = new Schema<IShippingAddress>(
+  {
+    firstName: { type: String, required: true, trim: true },
+    lastName: { type: String, required: true, trim: true },
+    email: { type: String, required: true, trim: true, lowercase: true },
+    phone: { type: String, required: true, trim: true },
+    address: { type: String, required: true, trim: true },
+    city: { type: String, required: true, trim: true },
+    state: { type: String, required: true, trim: true },
+    postalCode: { type: String, required: true, trim: true },
+    country: { type: String, required: true, trim: true },
+    isDefault: { type: Boolean, default: false },
+  },
+  {
+    _id: true,
+    timestamps: true,
+  }
+);
 
 export interface IUser extends BaseDocument {
   clerkId?: string;
@@ -13,12 +47,7 @@ export interface IUser extends BaseDocument {
   phone?: string;
   avatar?: string;
 
-  role: {
-    type: String;
-    enum: ["customer", "admin", "staff"];
-    default: "customer";
-    index: true;
-  };
+  role: "customer" | "admin" | "staff";
 
   addresses: IShippingAddress[];
 
@@ -35,7 +64,7 @@ const UserSchema = new Schema<IUser>(
     clerkId: {
       type: String,
       unique: true,
-      sparse: true, // Allows null for admin users
+      sparse: true,
       index: true,
     },
     firstName: {

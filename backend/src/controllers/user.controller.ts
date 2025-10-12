@@ -93,26 +93,190 @@ export const deleteUser = asyncHandler(async (req: Request, res: Response) => {
   return ApiResponse.ok(res, "User deactivated successfully");
 });
 
+// @desc    Get user profile
+// @route   GET /api/v1/users/profile
+// @access  Private
+export const getUserProfile = asyncHandler(
+  async (req: Request, res: Response) => {
+    const user = await User.findById(req.user!._id).select("-password").lean();
+
+    if (!user) {
+      throw ApiError.notFound("User not found");
+    }
+
+    return ApiResponse.ok(res, "Profile retrieved successfully", { user });
+  }
+);
+
+// @desc    Update user profile
+// @route   PUT /api/v1/users/profile
+// @access  Private
+export const updateUserProfile = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { firstName, lastName, phone } = req.body;
+
+    const user = await User.findById(req.user!._id);
+
+    if (!user) {
+      throw ApiError.notFound("User not found");
+    }
+
+    // Update fields if provided
+    if (firstName) user.firstName = firstName;
+    if (lastName) user.lastName = lastName;
+    if (phone !== undefined) user.phone = phone;
+
+    await user.save();
+
+    // Remove password from response
+    const userResponse = await User.findById(user._id)
+      .select("-password")
+      .lean();
+
+    return ApiResponse.ok(res, "Profile updated successfully", {
+      user: userResponse,
+    });
+  }
+);
+
+// @desc    Get user addresses
+// @route   GET /api/v1/users/addresses
+// @access  Private
+export const getAddresses = asyncHandler(
+  async (req: Request, res: Response) => {
+    const user = await User.findById(req.user!._id).select("addresses").lean();
+
+    if (!user) {
+      throw ApiError.notFound("User not found");
+    }
+
+    return ApiResponse.ok(res, "Addresses retrieved successfully", {
+      addresses: user.addresses || [],
+    });
+  }
+);
+
 // @desc    Add address
 // @route   POST /api/v1/users/addresses
 // @access  Private
 export const addAddress = asyncHandler(async (req: Request, res: Response) => {
+  const {
+    firstName,
+    lastName,
+    email,
+    phone,
+    address,
+    city,
+    state,
+    postalCode,
+    country,
+    isDefault,
+  } = req.body;
+
   const user = await User.findById(req.user!._id);
 
   if (!user) {
     throw ApiError.notFound("User not found");
   }
 
-  user.addresses.push(req.body);
+  // If this is the first address or isDefault is true, set all others to false
+  if (user.addresses.length === 0 || isDefault) {
+    user.addresses.forEach((addr: any) => {
+      addr.isDefault = false;
+    });
+  }
+
+  // Create new address
+  const newAddress = {
+    firstName,
+    lastName,
+    email,
+    phone,
+    address,
+    city,
+    state,
+    postalCode,
+    country,
+    isDefault: user.addresses.length === 0 ? true : isDefault || false,
+  };
+
+  user.addresses.push(newAddress as any);
   await user.save();
 
-  return ApiResponse.created(res, "Address added successfully", { user });
+  // Get the newly added address (last item)
+  const addedAddress = user.addresses[user.addresses.length - 1];
+
+  return ApiResponse.created(res, "Address added successfully", {
+    address: addedAddress,
+  });
 });
 
 // @desc    Update address
 // @route   PUT /api/v1/users/addresses/:addressId
 // @access  Private
 export const updateAddress = asyncHandler(
+  async (req: Request, res: Response) => {
+    const {
+      firstName,
+      lastName,
+      email,
+      phone,
+      address,
+      city,
+      state,
+      postalCode,
+      country,
+      isDefault,
+    } = req.body;
+
+    const user = await User.findById(req.user!._id);
+
+    if (!user) {
+      throw ApiError.notFound("User not found");
+    }
+
+    const addressIndex = user.addresses.findIndex(
+      (addr: any) => addr._id.toString() === req.params.addressId
+    );
+
+    if (addressIndex === -1) {
+      throw ApiError.notFound("Address not found");
+    }
+
+    // If setting as default, unset all others
+    if (isDefault) {
+      user.addresses.forEach((addr: any) => {
+        addr.isDefault = false;
+      });
+    }
+
+    // Update address fields
+    const currentAddress = user.addresses[addressIndex] as any;
+    currentAddress.firstName = firstName || currentAddress.firstName;
+    currentAddress.lastName = lastName || currentAddress.lastName;
+    currentAddress.email = email || currentAddress.email;
+    currentAddress.phone = phone || currentAddress.phone;
+    currentAddress.address = address || currentAddress.address;
+    currentAddress.city = city || currentAddress.city;
+    currentAddress.state = state || currentAddress.state;
+    currentAddress.postalCode =
+      postalCode !== undefined ? postalCode : currentAddress.postalCode;
+    currentAddress.country = country || currentAddress.country;
+    currentAddress.isDefault =
+      isDefault !== undefined ? isDefault : currentAddress.isDefault;
+
+    await user.save();
+
+    return ApiResponse.ok(res, "Address updated successfully", {
+      address: user.addresses[addressIndex],
+    });
+  }
+);
+
+// @desc    Delete address
+// @route   DELETE /api/v1/users/addresses/:addressId
+// @access  Private
+export const deleteAddress = asyncHandler(
   async (req: Request, res: Response) => {
     const user = await User.findById(req.user!._id);
 
@@ -128,34 +292,19 @@ export const updateAddress = asyncHandler(
       throw ApiError.notFound("Address not found");
     }
 
-    user.addresses[addressIndex] = {
-      ...user.addresses[addressIndex],
-      ...req.body,
-    };
-    await user.save();
+    const wasDefault = (user.addresses[addressIndex] as any).isDefault;
 
-    return ApiResponse.ok(res, "Address updated successfully", { user });
-  }
-);
+    // Remove the address
+    user.addresses.splice(addressIndex, 1);
 
-// @desc    Delete address
-// @route   DELETE /api/v1/users/addresses/:addressId
-// @access  Private
-export const deleteAddress = asyncHandler(
-  async (req: Request, res: Response) => {
-    const user = await User.findById(req.user!._id);
-
-    if (!user) {
-      throw ApiError.notFound("User not found");
+    // If the deleted address was default and there are other addresses, set the first one as default
+    if (wasDefault && user.addresses.length > 0) {
+      (user.addresses[0] as any).isDefault = true;
     }
 
-    user.addresses = user.addresses.filter(
-      (addr: any) => addr._id.toString() !== req.params.addressId
-    );
-
     await user.save();
 
-    return ApiResponse.ok(res, "Address deleted successfully", { user });
+    return ApiResponse.ok(res, "Address deleted successfully");
   }
 );
 
@@ -170,10 +319,27 @@ export const setDefaultAddress = asyncHandler(
       throw ApiError.notFound("User not found");
     }
 
-    // Implementation depends on your address schema
-    // This is a placeholder
+    const addressIndex = user.addresses.findIndex(
+      (addr: any) => addr._id.toString() === req.params.addressId
+    );
 
-    return ApiResponse.ok(res, "Default address set successfully", { user });
+    if (addressIndex === -1) {
+      throw ApiError.notFound("Address not found");
+    }
+
+    // Set all addresses to not default
+    user.addresses.forEach((addr: any) => {
+      addr.isDefault = false;
+    });
+
+    // Set the selected address as default
+    (user.addresses[addressIndex] as any).isDefault = true;
+
+    await user.save();
+
+    return ApiResponse.ok(res, "Default address updated successfully", {
+      address: user.addresses[addressIndex],
+    });
   }
 );
 

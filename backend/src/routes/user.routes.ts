@@ -1,9 +1,14 @@
+// routes/user.routes.ts - UPDATE your existing file
+
 import { Router } from "express";
 import {
   getAllUsers,
   getUserById,
   updateUser,
   deleteUser,
+  getUserProfile,
+  updateUserProfile,
+  getAddresses,
   addAddress,
   updateAddress,
   deleteAddress,
@@ -16,12 +21,18 @@ import { validate } from "@/middlewares/validation.middleware";
 
 const router = Router();
 
+// Public route - Clerk webhook
 router.post("/sync-clerk", syncClerkUser);
 
-// All routes require authentication
+// All routes below require authentication
 router.use(authenticate);
 
-// User address management
+// User profile routes
+router.get("/profile", getUserProfile);
+router.put("/profile", updateUserProfile);
+
+// User address management routes
+router.get("/addresses", getAddresses);
 router.post("/addresses", validate(addressValidator), addAddress);
 router.put("/addresses/:addressId", validate(addressValidator), updateAddress);
 router.delete("/addresses/:addressId", deleteAddress);

@@ -9,6 +9,7 @@
     "start": "node dist/server.js",
     "seed:prod": "node dist/scripts/seed.js",
     "seed": "ts-node --files -r tsconfig-paths/register src/scripts/seed.ts",
+    "migrate:addresses": "ts-node --files -r tsconfig-paths/register src/scripts/migrateAddresses.ts",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --write \"src/**/*.ts\"",

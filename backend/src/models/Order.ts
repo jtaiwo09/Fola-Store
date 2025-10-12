@@ -1,6 +1,7 @@
 // models/Order.ts
 import mongoose, { Schema, Types } from "mongoose";
 import { BaseDocument } from "../types";
+import { AddressSchema, IShippingAddress } from "./User";
 
 export interface IOrderItem {
   product: Types.ObjectId;
@@ -15,18 +16,6 @@ export interface IOrderItem {
   unitPrice: number;
   totalPrice: number;
   unitOfMeasure: string;
-}
-
-export interface IShippingAddress {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  address: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  country: string;
 }
 
 export interface IPaymentDetails {
@@ -119,21 +108,6 @@ const OrderItemSchema = new Schema<IOrderItem>(
       type: String,
       required: true,
     },
-  },
-  { _id: false }
-);
-
-export const AddressSchema = new Schema<IShippingAddress>(
-  {
-    firstName: { type: String, required: true, trim: true },
-    lastName: { type: String, required: true, trim: true },
-    email: { type: String, required: true, trim: true, lowercase: true },
-    phone: { type: String, required: true, trim: true },
-    address: { type: String, required: true, trim: true },
-    city: { type: String, required: true, trim: true },
-    state: { type: String, required: true, trim: true },
-    postalCode: { type: String, required: true, trim: true },
-    country: { type: String, required: true, trim: true },
   },
   { _id: false }
 );
